@@ -1,0 +1,170 @@
+package com.poi.code.creator.vo.req;
+
+
+#foreach($pkg in ${table.importPackages})
+#end
+#if(${swagger2})
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+#end
+#if(${entityLombokModel})
+#end
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import com.poi.code.creator.vo.base.req.BaseReq;
+
+import io.swagger.annotations.ApiModel;
+
+/**
+ * <p>
+ * Add${entity}Req 请求对象
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@ApiModel(value = "${entity}新增请求对象", description = "$!{table.comment}")
+public class Add${entity}Req extends BaseReq implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    #foreach($field in ${table.fields})
+        #if("$!field.comment" != "")
+            #if(${swagger2} && !${field.propertyName.equals("recStatus")}  &&!${field.propertyName.equals("updateTime")}  &&!${field.propertyName.equals("createTime")} &&!${field.propertyName.equals("modifyTime")}&&!${field.keyFlag})
+                @ApiModelProperty(value = "${field.comment}")
+                private ${field.propertyType} ${field.propertyName};
+            #end
+        #end
+    #end
+}
+
+
+
+
+
+package com.poi.code.creator.vo.req;
+
+
+    #foreach($pkg in ${table.importPackages})
+    #end
+    #if(${swagger2})
+            import io.swagger.annotations.ApiModel;
+            import io.swagger.annotations.ApiModelProperty;
+    #end
+    #if(${entityLombokModel})
+    #end
+        import lombok.Data;
+
+        import java.io.Serializable;
+        import java.util.Date;
+
+        import com.poi.code.creator.vo.base.req.BaseReq;
+
+        import io.swagger.annotations.ApiModel;
+
+/**
+ * <p>
+ * List${entity}Req对象
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@ApiModel(value = "List${entity}列表请求对象", description = "$!{table.comment}")
+public class List${entity}Req extends BaseReq implements Serializable {
+
+    @ApiModelProperty(value = "关键字查询", required = false)
+    private String keyword;
+
+}
+
+
+
+package com.poi.code.creator.vo.req;
+
+
+    #foreach($pkg in ${table.importPackages})
+    #end
+    #if(${swagger2})
+            import io.swagger.annotations.ApiModel;
+            import io.swagger.annotations.ApiModelProperty;
+    #end
+    #if(${entityLombokModel})
+    #end
+        import lombok.Data;
+
+        import java.io.Serializable;
+        import java.util.Date;
+
+        import com.poi.code.creator.vo.base.req.BaseReq;
+
+        import io.swagger.annotations.ApiModel;
+
+/**
+ * <p>
+ * Update${entity}Req 请求对象
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@ApiModel(value = "${entity}更新请求对象", description = "$!{table.comment}")
+public class Update${entity}Req extends BaseReq implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    #foreach($field in ${table.fields})
+        #if(${field.keyFlag})
+            @ApiModelProperty(value = "${field.comment}", required = true)
+            private ${field.propertyType} ${field.propertyName};
+        #end
+        #if("$!field.comment" != "")
+            #if(${swagger2} && !${field.propertyName.equals("recStatus")}  &&!${field.propertyName.equals("updateTime")}  &&!${field.propertyName.equals("createTime")} &&!${field.propertyName.equals("modifyTime")}&&!${field.keyFlag})
+                @ApiModelProperty(value = "${field.comment}")
+                private ${field.propertyType} ${field.propertyName};
+            #end
+        #end
+    #end
+}
+
+
+package com.poi.code.creator.vo.req;
+
+
+    #foreach($pkg in ${table.importPackages})
+    #end
+    #if(${swagger2})
+            import io.swagger.annotations.ApiModel;
+            import io.swagger.annotations.ApiModelProperty;
+    #end
+    #if(${entityLombokModel})
+    #end
+        import lombok.Data;
+
+        import java.io.Serializable;
+        import java.util.Date;
+
+        import com.poi.code.creator.vo.base.req.BasePageReq;
+
+        import io.swagger.annotations.ApiModel;
+
+/**
+ * <p>
+ * Page${entity}Req对象
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@ApiModel(value = "List${entity}列表请求对象", description = "$!{table.comment}")
+public class Page${entity}Req extends BasePageReq implements Serializable {
+
+    @ApiModelProperty(value = "关键字查询", required = false)
+    private String keyword;
+
+}

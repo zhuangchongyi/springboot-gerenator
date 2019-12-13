@@ -1,0 +1,89 @@
+package ${package.Service};
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import com.poi.code.creator.vo.base.ApiResp;
+import com.poi.code.creator.vo.base.req.BaseReq;
+import com.poi.code.creator.vo.req.Add${entity}Req;
+import com.poi.code.creator.vo.req.Update${entity}Req;
+import com.poi.code.creator.vo.req.List${entity}Req;
+import com.poi.code.creator.vo.req.Page${entity}Req;
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import java.util.List;
+
+import java.util.Date;
+
+import ${superServiceClassPackage};
+
+/**
+ * <p>
+ * ${entity}服务类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+public class ${table.serviceName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>  {
+
+public ApiResp list(List${entity}Req req)throws Exception{
+        String keyword = req.getKeyword();
+        QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(keyword)) {
+        queryWrapper.like("", req.getKeyword());
+        }
+        return new ApiResp().data(baseMapper.selectList(queryWrapper));
+        }
+
+public ApiResp page(Page${entity}Req req)throws Exception{
+        String keyword = req.getKeyword();
+        IPage<${entity}> page = new Page<>(req.getPageNum(), req.getPageSize());
+        QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(keyword)) {
+        queryWrapper.like("", keyword);
+        }
+        return new ApiResp().data(baseMapper.selectPage(page, queryWrapper));
+        }
+
+public ApiResp add(Add${entity}Req req)throws Exception{
+    ${entity} data = new  ${entity}();
+        BeanUtils.copyProperties(req, data);
+    #foreach($field in ${table.fields})
+        #if(${field.propertyName.equals("createTime")})
+                data.set${field.capitalName}(new Date());
+        #end
+    #end
+        baseMapper.insert(data);
+        return new ApiResp().data(#foreach($field in ${table.fields})#if(${field.keyFlag})data.get${field.capitalName}()#end#end);
+        }
+
+public ApiResp modify(Update${entity}Req req)throws Exception{
+    ${entity} data = new  ${entity}();
+        BeanUtils.copyProperties(req, data);
+    #foreach($field in ${table.fields})
+        #if(${field.propertyName.equals("updateTime")} || ${field.propertyName.equals("modifyTime")})
+                data.set${field.capitalName}(new Date());
+        #end
+    #end
+        baseMapper.updateById(data);
+        return new ApiResp().data(Boolean.TRUE);
+        }
+
+public ApiResp delete(#foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyType} ${field.propertyName}#end#end)throws Exception{
+        baseMapper.deleteById(#foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end);
+        return new ApiResp().data(Boolean.TRUE);
+        }
+
+public ApiResp get(#foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyType} ${field.propertyName}#end#end)throws Exception{
+        return new ApiResp().data(baseMapper.selectById(#foreach($field in ${table.fields})#if(${field.keyFlag})${field.propertyName}#end#end));
+        }
+        }
