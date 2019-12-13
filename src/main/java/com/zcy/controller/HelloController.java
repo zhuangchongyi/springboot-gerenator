@@ -4,6 +4,7 @@ package com.zcy.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * <p>
@@ -14,12 +15,15 @@ import org.springframework.stereotype.Controller;
  * @since 2019-12-13
  */
 @Controller
+@RequestMapping("/hello/")
 public class HelloController {
 
+    @ResponseBody
     @RequestMapping("hi")
     public String hi(){
         return "hello";
     }
+
 
 }
 
