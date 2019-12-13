@@ -28,30 +28,23 @@ public class DruidConfig {
     public ServletRegistrationBean statViewServlet(){
         ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
         Map<String,String> initParams = new HashMap<>();
-
-        initParams.put("loginUsername","admin");
-        initParams.put("loginPassword","123456");
+        initParams.put("loginUsername","root");
+        initParams.put("loginPassword","root");
         initParams.put("allow","");//默认就是允许所有访问
-        initParams.put("deny","192.168.15.21");
-
+        initParams.put("deny","127.0.0.1");
         bean.setInitParameters(initParams);
         return bean;
     }
-
 
     //2、配置一个web监控的filter
     @Bean
     public FilterRegistrationBean webStatFilter(){
         FilterRegistrationBean bean = new FilterRegistrationBean();
         bean.setFilter(new WebStatFilter());
-
         Map<String,String> initParams = new HashMap<>();
         initParams.put("exclusions","*.js,*.css,/druid/*");
-
         bean.setInitParameters(initParams);
-
         bean.setUrlPatterns(Arrays.asList("/*"));
-
         return  bean;
     }
 
