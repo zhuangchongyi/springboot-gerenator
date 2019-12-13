@@ -4,6 +4,14 @@ server:
     context-path: /api
 
 spring:
+  mvc:
+    view:
+      suffix: .html
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
+
+  #数据源
   datasource:
     #数据源基本配置
     driver-class-name: com.mysql.jdbc.Driver
@@ -29,7 +37,6 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
-mybatis:
-  mapper-locations: classpath:mapper/**/*Mapper.xml
-  type-aliases-package: com.zcy.entity
+
+
 
