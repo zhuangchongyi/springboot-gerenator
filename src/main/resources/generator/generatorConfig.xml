@@ -21,18 +21,18 @@
         <!-- 关于生成实体类的设置 -->
         <!-- targetPackage 生成代码的目标目录 -->
         <!-- targetProject 目录所属位置 -->
-        <javaModelGenerator targetPackage="com.zcy.model" targetProject="D:/temp/">
+        <javaModelGenerator targetPackage="com.zcy.entity" targetProject="D:/temp/dao/">
             <property name="trimStrings" value="true"/>
             <property name="enableSubPackages" value="true"/>
         </javaModelGenerator>
 
         <!--关于生成映射文件的设置-->
-        <sqlMapGenerator targetPackage="mapper" targetProject="D:/temp/">
+        <sqlMapGenerator targetPackage="mapper" targetProject="D:/temp/dao/">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!--关于生成dao层的设置-->
-        <javaClientGenerator type="mapper" targetPackage="com.zcy.dao" targetProject="D:/temp/">
+        <javaClientGenerator type="mapper" targetPackage="com.zcy.mapper" targetProject="D:/temp/dao/">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 

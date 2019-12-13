@@ -1,19 +1,64 @@
-<@extends path="../ftl_service_impl.ftl"/>
-<#macro imports_other>
-import com.ssm.mrmf.util.TransactionException;
+<#----------------------------- 内容 ----------------------------->
+/*---------代码生成请勿手工修改---------*/
+<@imports/>
+<@class/>
+<#----------------------------- 定义 ----------------------------->
+<#macro imports>
+package ${pkg}.${namespace}.service.impl;
+import java.util.List;
+import java.util.Map;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.ssm.utils.CommonUtils;
+import com.ssm.base.page.PageObjectWrapper;
+import ${pkg}.${namespace}.dao.${table.alias}Dao;
+import ${pkg}.${namespace}.service.inter.${table.alias}Service;
+import ${pkg}.${namespace}.vo.${table.alias}Vo;
+import ${pkg}.mrmf.util.TransactionException;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Timestamp;
 import java.util.HashMap;
-import com.ssm.sys.util.DateUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.ObjectUtils;
-import com.ssm.utils.JsonHelper;
-import com.ssm.utils.SessionDataUtil;
+import ${pkg}.utils.JsonHelper;
+import ${pkg}.utils.SessionDataUtil;
 import javax.servlet.http.HttpServletRequest;
+<@imports_other/>
+</#macro>
+<#macro imports_other></#macro>
+<#macro class>
+/**
+ * ${table.des!table.name}
+ */
+@Service
+public class ${table.alias}ServiceImpl implements ${table.alias}Service {
+  private static Logger logger = Logger.getLogger(${table.alias}ServiceImpl.class);
+  @Autowired
+  ${table.alias}Dao ${table.alias?uncap_first}Dao;
+  <@otherAutowired/>
+<@insert/>
+<@insertBatch/>
+<@update/>
+<@updateBatch/>
+<@delete/>
+<@deleteBatch/>
+<@one/>
+<@list/>
+<@pageList/>
+<@count/>
+<@exists/>
+<@checkUnique/>
+<@start/>
+<@stop/>
+<@methods/>
+}
 </#macro>
 <#macro insert>
 <#if table.add>
-   /**
+  /**
 	 * 增加
 	 * @param vo
 	 * @return
@@ -31,6 +76,7 @@ import javax.servlet.http.HttpServletRequest;
 			BeanUtils.populate(vo, map);
 			vo.set${table.alias}Id(CommonUtils.getUuid());
 			vo.setCreatedBy(ObjectUtils.toString(userMap.get("name")));
+			vo.setCreatedId(ObjectUtils.toString(userMap.get("userId")));
 			String ts = CommonUtils.getSysDate();
 			System.out.println(ts + "###");
 			vo.setCreatedDate(ts);
@@ -42,9 +88,22 @@ import javax.servlet.http.HttpServletRequest;
 	 }
 </#if>
 </#macro>
+<#macro insertBatch>
+<#if table.add>
+   /**
+	 * 批量新增
+	 * @param list
+	 */
+	@Override
+	@Transactional 
+	public int  insertBatch(List  list){
+	return this.${table.alias?uncap_first}Dao.insertBatch(list);
+	}
+</#if>	  
+</#macro>
 <#macro update>
 <#if table.edit>
-   	/**
+   /**
 	 * 修改
 	 * @param vo
 	 * @return
@@ -60,12 +119,69 @@ import javax.servlet.http.HttpServletRequest;
 			${table.alias}Vo vo = new ${table.alias}Vo();
 			BeanUtils.populate(vo, map);
 			vo.setUpdatedDate(ts);
+			vo.setUpdatedId(ObjectUtils.toString(userMap.get("userId")));
 			vo.setUpdatedBy(ObjectUtils.toString(userMap.get("name")));
 			${table.alias?uncap_first}Dao.update(vo);
 		}
 		return resultMap;
 	}
 </#if>	
+</#macro>
+<#macro updateBatch>
+<#if table.edit>
+   /**
+	 * 批量修改
+	 * @param list
+	 */
+	@Override
+	@Transactional  
+	public int  updateBatch(List  list){
+	return this.${table.alias?uncap_first}Dao.updateBatch(list);
+	}
+</#if>
+</#macro>
+<#macro delete>
+<#if table.delete>
+   /**
+	 * 删除
+	 * @param formMap
+	 * @return
+	 */
+	@Override
+	@Transactional 
+	public int delete(Map formMap) {
+		return this.${table.alias?uncap_first}Dao.delete(formMap);
+	}
+</#if>		
+</#macro>
+<#macro deleteBatch>
+<#if table.delete>
+   /**
+	 * 删除
+	 * @param formMap
+	 * @return
+	 */
+	@Override
+	@Transactional 
+	public int deleteBatch(Map formMap) {
+		return this.${table.alias?uncap_first}Dao.deleteBatch(formMap);
+	}
+</#if>		
+</#macro>
+<#macro one>
+  /**
+	 * 查询对象
+	 * @param Map
+	 * @return
+	 */
+	@Override
+	public Map one(Map formMap) {
+		List<Map<String, Object>> list=this.${table.alias?uncap_first}Dao.list(formMap);
+		if(null!=list&&!list.isEmpty()){
+			return list.get(0);
+		}
+		return null;
+	}
 </#macro>
 <#macro list>
    /**
@@ -95,12 +211,32 @@ import javax.servlet.http.HttpServletRequest;
 		if (pageInfo != null) {
 			PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
 		}
-		
 		List<Map<String, Object>> list = this.${table.alias?uncap_first}Dao.list(formMap);
 		PageObjectWrapper pw = new PageObjectWrapper(pageInfo);
 		pw.addAll(list);
 		List<Map<String, Object>>  resultList=list;
+		//List<Map<String, Object>>  resultList=CommonUtils.formatHumpNameForList(list);
 		return resultList;
+	}
+</#macro>
+<#macro count>
+   /**
+	 * 统计
+	 * @param formMap
+	 * @return
+	 */
+	public int  count(Map formMap){
+	return this.${table.alias?uncap_first}Dao.count(formMap);
+	}
+</#macro>
+<#macro exists>
+   /**
+	 * 检查是否存在
+	 * @param formMap
+	 * @return
+	 */
+	public boolean  exists (Map formMap){
+	return this.${table.alias?uncap_first}Dao.exists(formMap);
 	}
 </#macro>
 <#macro checkUnique>
@@ -151,4 +287,26 @@ import javax.servlet.http.HttpServletRequest;
 	}
 </#if>	
 </#macro>
+<#macro start>
+	/**
+	 * 启用
+	 * @param vo
+	 * @param request
+	 */
+	public void start(${table.alias}Vo vo,HttpServletRequest request) {
+		vo.setState("1");
+		${table.alias?uncap_first}Dao.update(vo);
+	}
+</#macro>
+<#macro stop>
+	/**
+	 * 停用
+	 * @param vo
+	 */
+	public void stop(${table.alias}Vo vo) {
+		vo.setState("0");
+		${table.alias?uncap_first}Dao.update(vo);
+	}
+</#macro>
 <#macro methods></#macro>
+<#macro otherAutowired></#macro>

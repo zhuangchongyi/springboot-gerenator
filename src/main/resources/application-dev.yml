@@ -1,0 +1,15 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /api
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    data-username: root
+    data-password: root
+    url: jdbc:mysql://127.0.0.1:3306/sakila?useUnicode=true&useSSL=false&characterEncoding=utf8
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*Mapper.xml
+  type-aliases-package: com.zcy.sys.entity
+

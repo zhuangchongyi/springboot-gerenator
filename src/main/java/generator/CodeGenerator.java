@@ -1,4 +1,4 @@
-package com.zcy.generator;
+package generator;
 
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -47,8 +47,8 @@ public class CodeGenerator {
         PackageConfig pc = getPackageConfig();
         mpg.setPackageInfo(pc);
         // mapper.xml输出配置
-//        InjectionConfig cfg = getInjectionConfig(projectPath, pc);
-//        mpg.setCfg(cfg);
+        InjectionConfig cfg = getInjectionConfig(projectPath, pc);
+        mpg.setCfg(cfg);
         // 自定义模板
         TemplateConfig templateConfig = getTemplateConfig();
         mpg.setTemplate(templateConfig);
@@ -86,7 +86,8 @@ public class CodeGenerator {
      */
     private static PackageConfig getPackageConfig() {
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName(scanner("模块名"));
+//        pc.setModuleName(scanner("模块名"));
+        pc.setModuleName("");
         pc.setParent("com.zcy");
         return pc;
     }

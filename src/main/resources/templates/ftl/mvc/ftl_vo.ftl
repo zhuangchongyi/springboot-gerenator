@@ -1,1 +1,0 @@
-<@extends path="../ftl_vo.ftl"/>
