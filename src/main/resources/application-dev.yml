@@ -6,10 +6,11 @@ server:
 spring:
   mvc:
     view:
+      prefix: /
       suffix: .html
-    static-path-pattern: /**
-  resources:
-    static-locations: classpath:/templates/,classpath:/static/
+#    static-path-pattern: /**
+#  resources:
+#    static-locations: classpath:/templates/hello/,classpath:/static/
 
   #数据源
   datasource:
