@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
 
 import java.util.ArrayList;
@@ -47,16 +48,16 @@ public class CodeGenerator {
         PackageConfig pc = getPackageConfig();
         mpg.setPackageInfo(pc);
         // mapper.xml输出配置
-        InjectionConfig cfg = getInjectionConfig(projectPath, pc);
-        mpg.setCfg(cfg);
+//        InjectionConfig cfg = getInjectionConfig(projectPath, pc);
+//        mpg.setCfg(cfg);
         // 自定义模板
         TemplateConfig templateConfig = getTemplateConfig();
         mpg.setTemplate(templateConfig);
+        mpg.setTemplateEngine(new VelocityTemplateEngine());
         // 策略配置
         StrategyConfig strategy = getStrategyConfig(pc);
         mpg.setStrategy(strategy);
         // 模板类型
-        mpg.setTemplateEngine(new VelocityTemplateEngine());
         mpg.execute();
     }
 
@@ -68,14 +69,13 @@ public class CodeGenerator {
      */
     private static StrategyConfig getStrategyConfig(PackageConfig pc) {
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);
+        strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(false);        // 加Lombok注解
         strategy.setRestControllerStyle(false);      // 加@RestController注解
         strategy.setControllerMappingHyphenStyle(false);
-        strategy.setSuperEntityColumns("id");        // 写于父类中的公共字段
-        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
-        strategy.setTablePrefix(pc.getModuleName() + "_");
+        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));// 需要生成的表
+        strategy.setTablePrefix(pc.getModuleName() + "_");// 此处可以修改为的表前缀
         return strategy;
     }
 
@@ -87,8 +87,13 @@ public class CodeGenerator {
     private static PackageConfig getPackageConfig() {
         PackageConfig pc = new PackageConfig();
 //        pc.setModuleName(scanner("模块名"));
-        pc.setModuleName("");
-        pc.setParent("com.zcy");
+        pc.setParent("com.zcy")
+        .setController("controller")
+        .setEntity("entity")
+        .setMapper("dao")
+        .setService("service")
+        .setServiceImpl("service.impl")
+        .setXml("mapper");
         return pc;
     }
 
@@ -100,11 +105,21 @@ public class CodeGenerator {
      */
     private static GlobalConfig getGlobalConfig(String projectPath) {
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir(projectPath + "/src/main/java");
+        gc.setOutputDir(projectPath + "/src/main/java");//c输出路径
         gc.setAuthor("zhuangcy");
-        gc.setOpen(false);
-        // gc.setSwagger2(true); 实体属性 Swagger2 注解
-//        gc.setEntityName("%sModel");
+        gc.setFileOverride(true);// 是否覆盖文件
+        gc.setActiveRecord(false);// 开启 activeRecord 模式
+        gc.setEnableCache(false);// XML 二级缓存
+        gc.setBaseResultMap(true);// XML ResultMap
+        gc.setBaseColumnList(true);// XML columList
+        gc.setOpen(false);//生成后打开文件夹
+        gc.setSwagger2(false); //实体属性 Swagger2 注解
+        // 自定义文件命名，注意 %s 会自动填充表实体属性！
+       gc.setMapperName("%sMapper");
+       gc.setXmlName("%sMapper");
+       gc.setServiceName("%sService");
+       gc.setServiceImplName("%sServiceImpl");
+       gc.setControllerName("%sController");
         return gc;
     }
 
@@ -115,12 +130,12 @@ public class CodeGenerator {
      */
     private static TemplateConfig getTemplateConfig() {
         TemplateConfig templateConfig = new TemplateConfig();
-        templateConfig.setEntity("templates/vm/entity.java");
-//        templateConfig.setService("templates/vm/service.java");
-//        templateConfig.setServiceImpl("templates/vm/serviceImpl.java");
-//        templateConfig.setController("templates/vm/controller.java");
-//        templateConfig.setMapper("templates/mvc/ftl_dao");
-        templateConfig.setXml(null);
+        templateConfig.setController("/templates/common/controller.java");
+        templateConfig.setEntity("/templates/common/entity.java");
+        templateConfig.setMapper("/templates/common/mapper.java");
+        templateConfig.setXml("/templates/common/mapper.xml");
+        templateConfig.setServiceImpl("/templates/common/service.impl.java");
+        templateConfig.setService("/templates/common/service.java");
         return templateConfig;
     }
 

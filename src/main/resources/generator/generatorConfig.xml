@@ -5,6 +5,7 @@
 <generatorConfiguration>
     <context id="MySQLTables" targetRuntime="MyBatis3" defaultModelType="flat">
         <!-- 公共设置 -->
+        <!--<commentGenerator type="generator.MyCommentGenerator"/>--><!--有问题-->
         <commentGenerator>
             <!-- 是否取消自动生成时的注释 -->
             <property name="suppressAllComments" value="true"/>
@@ -18,21 +19,26 @@
                         userId="root"
                         password="root"/>
 
+        <!--是否强制DECIMAL和NUMERIC类型的字段转换为Java类型的java.math.BigDecimal,默认值为false-->
+        <!--<javaTypeResolver >
+            <property name="forceBigDecimals" value="true" />
+        </javaTypeResolver>-->
+
         <!-- 关于生成实体类的设置 -->
         <!-- targetPackage 生成代码的目标目录 -->
         <!-- targetProject 目录所属位置 -->
         <javaModelGenerator targetPackage="com.zcy.entity" targetProject="D:/temp/dao/">
-            <property name="trimStrings" value="true"/>
+            <property name="trimStrings" value="true"/><!--去空格-->
             <property name="enableSubPackages" value="true"/>
         </javaModelGenerator>
 
         <!--关于生成映射文件的设置-->
-        <sqlMapGenerator targetPackage="mapper" targetProject="D:/temp/dao/">
+        <sqlMapGenerator targetPackage="com.zcy.mapper" targetProject="D:/temp/dao/">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!--关于生成dao层的设置-->
-        <javaClientGenerator type="mapper" targetPackage="com.zcy.mapper" targetProject="D:/temp/dao/">
+        <javaClientGenerator type="mapper" targetPackage="com.zcy.dao" targetProject="D:/temp/dao/">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
@@ -40,9 +46,15 @@
         <!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample
             是否生成 example类 -->
         <table tableName="city"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false"
                enableCountByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
                enableUpdateByExample="false">
+
+            <generatedKey column="city_id" sqlStatement="Mysql" identity="true"/>
+
         </table>
         <!--需要生成的代码对应的表名-->
         <!--<table tableName="city"></table>-->
