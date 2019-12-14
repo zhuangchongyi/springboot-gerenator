@@ -35,18 +35,18 @@ public class CodeGenerator {
     public static void main(String[] args) {
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
-        // 项目路径
-//        String projectPath = System.getProperty("user.dir");
-        String projectPath = "D:/temp/mvc/";
         // 全局配置
-        GlobalConfig gc = getGlobalConfig(projectPath);
+        GlobalConfig gc = getGlobalConfig();
         mpg.setGlobalConfig(gc);
-        // 数据源配置
-        DataSourceConfig dsc = getDataSourceConfig();
-        mpg.setDataSource(dsc);
         // 包配置
         PackageConfig pc = getPackageConfig();
         mpg.setPackageInfo(pc);
+        // 策略配置
+        StrategyConfig strategy = getStrategyConfig(pc);
+        mpg.setStrategy(strategy);
+        // 数据源配置
+        DataSourceConfig dsc = getDataSourceConfig();
+        mpg.setDataSource(dsc);
         // mapper.xml输出配置
 //        InjectionConfig cfg = getInjectionConfig(projectPath, pc);
 //        mpg.setCfg(cfg);
@@ -54,9 +54,6 @@ public class CodeGenerator {
         TemplateConfig templateConfig = getTemplateConfig();
         mpg.setTemplate(templateConfig);
         mpg.setTemplateEngine(new VelocityTemplateEngine());
-        // 策略配置
-        StrategyConfig strategy = getStrategyConfig(pc);
-        mpg.setStrategy(strategy);
         // 模板类型
         mpg.execute();
     }
@@ -71,8 +68,9 @@ public class CodeGenerator {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setEntityLombokModel(false);        // 加Lombok注解
-        strategy.setRestControllerStyle(false);      // 加@RestController注解
+        strategy.setEntityLombokModel(true);        // 加Lombok注解
+        strategy.setSuperEntityClass("com.zcy.entity.BaseEntity");
+//        strategy.setRestControllerStyle(false);      // 加@RestController注解
         strategy.setControllerMappingHyphenStyle(false);
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));// 需要生成的表
         strategy.setTablePrefix(pc.getModuleName() + "_");// 此处可以修改为的表前缀
@@ -100,20 +98,22 @@ public class CodeGenerator {
     /**
      * 配置全局参数
      *
-     * @param projectPath
      * @return
      */
-    private static GlobalConfig getGlobalConfig(String projectPath) {
+    private static GlobalConfig getGlobalConfig() {
+        // 项目路径
+        String projectPath = System.getProperty("user.dir") + "/src/main/java";
+//        String projectPath = "D:/temp/mvc/";
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir(projectPath + "/src/main/java");//c输出路径
+        gc.setOutputDir(projectPath);//c输出路径
         gc.setAuthor("zhuangcy");
         gc.setFileOverride(true);// 是否覆盖文件
         gc.setActiveRecord(false);// 开启 activeRecord 模式
-        gc.setEnableCache(false);// XML 二级缓存
+//        gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(true);// XML columList
         gc.setOpen(false);//生成后打开文件夹
-        gc.setSwagger2(false); //实体属性 Swagger2 注解
+//        gc.setSwagger2(false); //实体属性 Swagger2 注解
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
        gc.setMapperName("%sMapper");
        gc.setXmlName("%sMapper");
