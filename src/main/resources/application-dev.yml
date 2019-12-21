@@ -11,14 +11,13 @@ spring:
 #    static-path-pattern: /**
 #  resources:
 #    static-locations: classpath:/templates/hello/,classpath:/static/
-
   #数据源
   datasource:
     #数据源基本配置
     driver-class-name: com.mysql.jdbc.Driver
     data-username: root
     data-password: root
-    url: jdbc:mysql://127.0.0.1:3306/sakila?useUnicode=true&useSSL=false&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/sakila?useUnicode=true&useSSL=false&characterEncoding=utf8
     #数据源其他配置
     type: com.alibaba.druid.pool.DruidDataSource
     initialSize: 5
@@ -38,6 +37,13 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
-
-
+#配置mybatis
+mybatis:
+  #  config-location: classpath:mybatis/mybatis-config.xml
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.zcy.entity
+  #开启驼峰映射
+  configuration:
+    map-underscore-to-camel-case: true
 
