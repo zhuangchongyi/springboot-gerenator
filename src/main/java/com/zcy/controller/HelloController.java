@@ -21,10 +21,6 @@ public class HelloController {
         return "hi";
     }
 
-    @RequestMapping("login")
-    public String index() {
-        return "redirect:hello/index";
-    }
 
     @RequestMapping("hello/index")
     public ModelAndView templatesIndex() {

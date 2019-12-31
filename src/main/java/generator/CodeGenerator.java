@@ -69,7 +69,7 @@ public class CodeGenerator {
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);        // 加Lombok注解
-        strategy.setSuperEntityClass("com.zcy.entity.BaseEntity");
+//        strategy.setSuperEntityClass("com.zcy.entity.BaseEntity");
 //        strategy.setRestControllerStyle(false);      // 加@RestController注解
         strategy.setControllerMappingHyphenStyle(false);
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));// 需要生成的表
@@ -110,8 +110,8 @@ public class CodeGenerator {
         gc.setFileOverride(true);// 是否覆盖文件
         gc.setActiveRecord(false);// 开启 activeRecord 模式
 //        gc.setEnableCache(false);// XML 二级缓存
-        gc.setBaseResultMap(true);// XML ResultMap
-        gc.setBaseColumnList(true);// XML columList
+//        gc.setBaseResultMap(true);// XML ResultMap
+//        gc.setBaseColumnList(true);// XML columList
         gc.setOpen(false);//生成后打开文件夹
 //        gc.setSwagger2(false); //实体属性 Swagger2 注解
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
@@ -180,7 +180,7 @@ public class CodeGenerator {
      */
     private static DataSourceConfig getDataSourceConfig() {
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/sakila?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/mydb?useUnicode=true&useSSL=false&characterEncoding=utf8");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("root");
