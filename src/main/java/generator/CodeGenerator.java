@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
 
 import java.util.ArrayList;
@@ -102,8 +101,8 @@ public class CodeGenerator {
      */
     private static GlobalConfig getGlobalConfig() {
         // 项目路径
-        String projectPath = System.getProperty("user.dir") + "/src/main/java";
-//        String projectPath = "D:/temp/mvc/";
+//        String projectPath = System.getProperty("user.dir") + "/src/main/java";
+        String projectPath = "F:/temp/";
         GlobalConfig gc = new GlobalConfig();
         gc.setOutputDir(projectPath);//c输出路径
         gc.setAuthor("zhuangcy");
@@ -115,7 +114,7 @@ public class CodeGenerator {
         gc.setOpen(false);//生成后打开文件夹
 //        gc.setSwagger2(false); //实体属性 Swagger2 注解
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
-       gc.setMapperName("%sMapper");
+       gc.setMapperName("%sDao");
        gc.setXmlName("%sMapper");
        gc.setServiceName("%sService");
        gc.setServiceImplName("%sServiceImpl");
