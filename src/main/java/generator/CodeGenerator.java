@@ -52,8 +52,8 @@ public class CodeGenerator {
         // 自定义模板
         TemplateConfig templateConfig = getTemplateConfig();
         mpg.setTemplate(templateConfig);
-        mpg.setTemplateEngine(new VelocityTemplateEngine());
         // 模板类型
+        mpg.setTemplateEngine(new VelocityTemplateEngine());
         mpg.execute();
     }
 
