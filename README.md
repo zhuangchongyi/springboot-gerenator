@@ -1,3 +1,5 @@
+## mybatis gerenator代码生成
+```
 idea Run>Edit configreactions > command line 
 添加 mybatis-generator:generator
 
@@ -22,3 +24,4 @@ mybatis-plus 转换不了mysql datetime/timesteam转换不了LocalDateTime
     <artifactId>mybatis</artifactId>
     <version>3.5.3</version>
 </dependency>
+```
